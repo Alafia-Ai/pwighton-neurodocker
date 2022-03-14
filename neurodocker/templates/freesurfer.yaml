@@ -103,7 +103,7 @@ binaries:
         dpkg -i /stage/freesurfer_amd64.deb
         # To supress interactive keyboard-configuration
         DEBIAN_FRONTEND=noninteractive apt-get -f -y install
-        # todo: find install dir (/usr/local/freesurfer/7.2.0/) and set env vars accordingly
+        # todo: find install dir (e.g. /usr/local/freesurfer/7.2.0/) and set env vars accordingly
         apt-get clean
         rm -rf /var/lib/apt/lists/*
         sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/'
@@ -129,6 +129,7 @@ source:
       # dir and have the subjects dir excluded
       subjects_dir: "/ext/fs-subjects"
       infant_model_dir: "/opt/fs-infant-model"
+      infant_model_s3: "s3://fs-infant/model/dev/"
       repo: https://github.com/freesurfer/freesurfer
       pkg_url: http://surfer.nmr.mgh.harvard.edu/pub/data/fspackages/prebuilt/centos7-packages.tar.gz
       annex: https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/repo/annex.git
@@ -324,6 +325,8 @@ source:
     pip3 install -r {{ self.source_path }}/infant/docker/requirements.txt
     ln -s {{ self.install_path }}/bin/infant-container-entrypoint.bash /bin/infant-container-entrypoint.bash
     ln -s {{ self.install_path }}/bin/infant-container-entrypoint-aws.bash /bin/infant-container-entrypoint-aws.bash
+    mkdir -p {{ self.infant_model_dir }}
+    aws s3 cp --recursive --include '*' {{ self.infant_model_s3 }} {{ self.infant_model_dir }}/
     {% else %}
     pip3 install -r {{ self.source_path }}/python/requirements.txt
     {% endif -%}
