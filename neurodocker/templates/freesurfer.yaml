@@ -319,6 +319,14 @@ source:
     cd {{ self.install_path }}
     cmake {{ self.cmake_opts }} {{ self.source_path }}
     make {{ self.make_opts }}
+    # Install awscli
+    # ----------------------------------------------------------------
+    cd /stage
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    ./aws/install
+    rm -rf /stage/aws
+    rm -rf /stage/awscliv2.zip
     # Install python reqs
     # ----------------------------------------------------------------
     {%- if self.infant_module.lower() in ["on", "true", "1", "y"] %}
@@ -352,17 +360,7 @@ source:
     mkdir -p {{ self.infant_model_dir }}
     # Dev tools
     #   - jupyter relies on `libsqlite3-dev` being present before python is compiled
-    #   - the /stage dir isn't deleted (to facilitate recompile/install/test)
-    #   - awscli is installed (todo, best place for this?)
     # ----------------------------------------------------------------
     {%- if self.dev_tools.lower() in ["on", "true", "1", "y"] %}
     pip3 install jupyter
-    cd /stage
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    ./aws/install
-    rm -rf /stage/aws
-    rm -rf /stage/awscliv2.zip
-    {% else %}
-    rm -rf /stage
     {% endif -%}

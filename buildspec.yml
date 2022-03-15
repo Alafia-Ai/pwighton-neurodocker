@@ -16,7 +16,7 @@ phases:
   build:
     on-failure: ABORT
     commands:
-      - docker build -t pwighton/neurodocker .
+      - docker build --network host -t pwighton/neurodocker .
   post_build:
     on-failure: ABORT
     commands:
