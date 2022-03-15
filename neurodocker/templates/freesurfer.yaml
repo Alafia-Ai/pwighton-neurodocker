@@ -343,6 +343,7 @@ source:
     cd {{ self.source_path }}
     git remote add datasrc {{ self.annex }}
     git fetch datasrc
+    git annex init
     git annex enableremote datasrc || true      
     # Pull from annex and install 
     # (`make install` will fail if `git annex get` isn't run)
