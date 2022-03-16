@@ -312,6 +312,7 @@ source:
     echo "   branch:      "{{ self.branch }}
     echo "   commit:      "{{ self.commit }}
     echo "   destination: "{{ self.source_path }}
+    echo git clone --branch {{ self.branch }} {{ self.repo }} {{ self.source_path }}
     git clone --branch {{ self.branch }} {{ self.repo }} {{ self.source_path }} 
     {%- if self.commit is defined and self.commit|length %}
     cd {{ self.source_path }}
