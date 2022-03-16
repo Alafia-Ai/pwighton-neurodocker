@@ -352,8 +352,4 @@ source:
     # ----------------------------------------------------------------
     {%- if self.git_annex_get.lower() in ["on", "true", "1", "y"] %}
     cd {{ self.source_path }}
-    git annex get -q .
-    git annex unlock
-    cd {{ self.install_path }}
-    make install
     {% endif -%}
