@@ -350,6 +350,3 @@ source:
     # Pull from annex and install
     # (`make install` will fail if `git annex get` isn't run)
     # ----------------------------------------------------------------
-    {%- if self.git_annex_get.lower() in ["on", "true", "1", "y"] %}
-    cd {{ self.source_path }}
-    {% endif -%}
