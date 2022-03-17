@@ -347,3 +347,14 @@ source:
     git fetch datasrc
     git annex init
     git annex enableremote datasrc || true
+    ## forget about annex stuff for now
+    # Setup mount points
+    # ----------------------------------------------------------------
+    mkdir -p {{ self.subjects_dir }}
+    mkdir -p {{ self.infant_model_dir }}
+    # Dev tools
+    #   - jupyter relies on `libsqlite3-dev` being present before python is compiled
+    # ----------------------------------------------------------------
+    {%- if self.dev_tools.lower() in ["on", "true", "1", "y"] %}
+    pip3 install jupyter
+    {% endif -%}
