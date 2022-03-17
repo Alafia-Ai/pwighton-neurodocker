@@ -314,3 +314,29 @@ source:
     echo "   destination: "{{ self.source_path }}
     echo git clone --branch {{ self.branch }} {{ self.repo }} {{ self.source_path }}
     git clone --branch {{ self.branch }} {{ self.repo }} {{ self.source_path }}
+    {%- if self.commit is defined and self.commit|length %}
+    cd {{ self.source_path }}
+    git checkout {{ self.commit }}
+    {% endif -%}
+    cd {{ self.install_path }}
+    cmake {{ self.cmake_opts }} {{ self.source_path }}
+    make {{ self.make_opts }}
+    # Install awscli
+    # ----------------------------------------------------------------
+    cd /stage
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    ./aws/install
+    rm -rf /stage/aws
+    rm -rf /stage/awscliv2.zip
+    # Install python reqs
+    # ----------------------------------------------------------------
+    {%- if self.infant_module.lower() in ["on", "true", "1", "y"] %}
+    pip3 install -r {{ self.source_path }}/infant/docker/requirements.txt
+    ln -s {{ self.install_path }}/bin/infant-container-entrypoint.bash /bin/infant-container-entrypoint.bash
+    ln -s {{ self.install_path }}/bin/infant-container-entrypoint-aws.bash /bin/infant-container-entrypoint-aws.bash
+    mkdir -p {{ self.infant_model_dir }}
+    aws s3 cp --no-sign-request --region={{ self.infant_model_s3_region }} --recursive --include '*' {{ self.infant_model_s3 }} {{ self.infant_model_dir }}/
+    {% else %}
+    pip3 install -r {{ self.source_path }}/python/requirements.txt
+    {% endif -%}
