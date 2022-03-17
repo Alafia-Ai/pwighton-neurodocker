@@ -314,10 +314,3 @@ source:
     echo "   destination: "{{ self.source_path }}
     echo git clone --branch {{ self.branch }} {{ self.repo }} {{ self.source_path }}
     git clone --branch {{ self.branch }} {{ self.repo }} {{ self.source_path }}
-    {%- if self.commit is defined and self.commit|length %}
-    cd {{ self.source_path }}
-    git checkout {{ self.commit }}
-    {% endif -%}
-    cd {{ self.install_path }}
-    cmake {{ self.cmake_opts }} {{ self.source_path }}
-    make {{ self.make_opts }}
