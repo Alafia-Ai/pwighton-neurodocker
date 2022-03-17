@@ -340,13 +340,6 @@ source:
     {% else %}
     pip3 install -r {{ self.source_path }}/python/requirements.txt
     {% endif -%}
-    # Setup annex remote
-    # ----------------------------------------------------------------
-    cd {{ self.source_path }}
-    git remote add datasrc {{ self.annex }}
-    git fetch datasrc
-    git annex init
-    git annex enableremote datasrc || true
     ## forget about annex stuff for now
     # Setup mount points
     # ----------------------------------------------------------------
