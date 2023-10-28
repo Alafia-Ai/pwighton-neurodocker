@@ -181,7 +181,7 @@ source:
     # default freesurfer options
     FS_OVERRIDE: "0"
     FIX_VERTEX_AREA: ""
-    # To supress a `Could not set locale` error when `mri_convert` is run in recon-all
+    # To suppress a `Could not set locale` error when `mri_convert` is run in recon-all
     FS_DISABLE_LANG: "1"
     # Just in case: https://github.com/freesurfer/freesurfer/issues/776
     FS_TIME_ALLOW: "0"
